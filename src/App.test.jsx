@@ -23,12 +23,20 @@ const user = {
 }
 
 // 🚨 Create your server
-
+const server = setupServer(
+  rest.get(`${process.env.REACT_APP_SUPABASE_URL}/rest/v1/users?select=*`,(req, res, ctx) => {
+    return res(ctx.json(user))
+  })
+)
 // 🚨 Listen for server start
-beforeAll()
+beforeAll(() => {
+  server.listen()
+})
 
 // 🚨 Close server when complete
-afterAll()
+afterAll(() => {
+  server.close()
+})
 
 test('Should render the header', async () => {
   render(<App />)
